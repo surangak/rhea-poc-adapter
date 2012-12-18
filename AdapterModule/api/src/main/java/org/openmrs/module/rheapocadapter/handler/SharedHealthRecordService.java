@@ -22,6 +22,8 @@ import org.openmrs.module.rheapocadapter.transaction.ArchiveTransaction;
 import org.openmrs.module.rheapocadapter.transaction.ErrorTransaction;
 import org.openmrs.module.rheapocadapter.transaction.ProcessingTransaction;
 import org.openmrs.module.rheapocadapter.transaction.Transaction;
+import org.openmrs.module.rheapocadapter.util.MessagePostingThread;
+
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Message;
 import ca.uhn.hl7v2.model.v25.message.ORU_R01;
@@ -52,24 +54,12 @@ public class SharedHealthRecordService {
 		String[] methd = new String[] { "POST", "SavePatientEncounter" };
 		TreeMap<String, String> parameters = new TreeMap<String, String>();
 		parameters.put("patientId", clientId);
-		Transaction item = requestHandler.sendRequest(methd, message,
-				parameters);
-		if (item instanceof ArchiveTransaction) {
-			item.setMessage("EncounterId=" + encounter.getEncounterId());
-			String url = methd[0] + " " + item.getUrl();
-			item.setUrl(url);
-			result = "Save Patient Encounter succeded";
-		} else if (item instanceof ProcessingTransaction) {
-			item.setMessage("EncounterId=" + encounter.getEncounterId() + "");
-			result = "Save Patient Encounter failed, try again later";
-		} else if (item instanceof ErrorTransaction) {
+		
+		Thread thread = new Thread(new MessagePostingThread(methd,message,parameters,encounter));
+		thread.setDaemon(true);
+		thread.start();
 
-			item.setMessage("EncounterId=" + encounter.getEncounterId() + "");
-			result = "Save Patient Encounter failed, Contact Administrator";
-
-		}
-		response.handleResponse(item);
-		return result;
+		return null;
 
 	}
 
