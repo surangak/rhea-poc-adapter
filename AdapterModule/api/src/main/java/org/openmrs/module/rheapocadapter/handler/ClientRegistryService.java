@@ -21,6 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.rheapocadapter.util.PatientCreationThread;
 import org.openmrs.module.rheapocadapter.TransactionUtil;
 import org.openmrs.module.rheapocadapter.impl.HL7MessageTransformer;
 import org.openmrs.module.rheapocadapter.service.MessageTransformer;
@@ -101,21 +102,12 @@ public class ClientRegistryService {
 			TransactionUtil.setCreator(patient.getCreator());
 			String[] methd = new String[] { "POST", "RegisterNew" };
 			TreeMap<String, String> parameters = new TreeMap<String, String>();
-			Transaction item = requestHandler.sendRequest(methd, message,
-					parameters);
-			if (item instanceof ArchiveTransaction) {
-				item.setMessage("Saving patient with Id"
-						+ patient.getPatientId() + " Succeded");
-				result = "Register succeded";
-			} else if (item instanceof ProcessingTransaction) {
-				item.setMessage("SavePatientId=" + patient.getPatientId() + "");
-				result = "Register failed, try again later";
-			} else if (item instanceof ErrorTransaction) {
-				result = "Register failed, Contact Administrator";
 
-			}
-			response.handleResponse(item);
-			return result;
+			Thread thread = new Thread(new PatientCreationThread(methd,message,parameters,patient));
+		    thread.setDaemon(true);
+		    thread.start();
+		 	 
+			return null;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return "";
