@@ -31,7 +31,7 @@ import org.openmrs.module.rheapocadapter.transaction.ProcessingTransaction;
 import org.openmrs.module.rheapocadapter.transaction.Transaction;
 import org.openmrs.scheduler.SchedulerConstants;
 
-public class PatientCreationThread implements Runnable{
+public class PatientMessageThread implements Runnable{
 	
 	private Log log = LogFactory.getLog(this.getClass());
 
@@ -42,8 +42,8 @@ public class PatientCreationThread implements Runnable{
 	private String message;
 	private String result = "";
 	private Patient patient;
-	
-	
+	private String transactionType;
+
 	public Patient getPatient() {
 		return patient;
 	}
@@ -51,18 +51,23 @@ public class PatientCreationThread implements Runnable{
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
+	
+	public String getTransactionType() {
+		return transactionType;
+	}
 
-	public PatientCreationThread(String[] methd2, String message2,
-			TreeMap<String, String> parameters2, Patient patient2) {
+	public void setTransactionType(String transactionType) {
+		this.transactionType = transactionType;
+	}
+
+	public PatientMessageThread(String[] methd2, String message2,
+			TreeMap<String, String> parameters2, Patient patient2, String transactionType2) {
 		this.methd = methd2;
 		this.message = message2;
 		this.parameters = parameters2;
 		this.patient = patient2;
+		this.transactionType = transactionType2;
 	}
-
-
-
-
 	
 	public TreeMap<String, String> getParameters() {
 		return parameters;
@@ -124,11 +129,11 @@ public class PatientCreationThread implements Runnable{
 				parameters);
 
 		if (item instanceof ArchiveTransaction) {
-			item.setMessage("Saving patient with Id"
+			item.setMessage(transactionType+ "patient with Id"
 					+ patient.getPatientId() + " Succeded");
 			result = "Registration message sending succeded";
 		} else if (item instanceof ProcessingTransaction) {
-			item.setMessage("SavePatientId=" + patient.getPatientId() + "");
+			item.setMessage(transactionType+ "PatientId=" + patient.getPatientId() + "");
 			result = "Registration message failed, try again later";
 		} else if (item instanceof ErrorTransaction) {
 			result = "Registration message failed, Contact Administrator";

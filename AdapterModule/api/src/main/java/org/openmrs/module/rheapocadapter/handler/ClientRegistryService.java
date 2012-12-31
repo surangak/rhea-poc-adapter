@@ -21,7 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.rheapocadapter.util.PatientCreationThread;
+import org.openmrs.module.rheapocadapter.util.PatientMessageThread;
 import org.openmrs.module.rheapocadapter.TransactionUtil;
 import org.openmrs.module.rheapocadapter.impl.HL7MessageTransformer;
 import org.openmrs.module.rheapocadapter.service.MessageTransformer;
@@ -103,7 +103,7 @@ public class ClientRegistryService {
 			String[] methd = new String[] { "POST", "RegisterNew" };
 			TreeMap<String, String> parameters = new TreeMap<String, String>();
 
-			Thread thread = new Thread(new PatientCreationThread(methd,message,parameters,patient));
+			Thread thread = new Thread(new PatientMessageThread(methd,message,parameters,patient,"Saving "));
 		    thread.setDaemon(true);
 		    thread.start();
 		 	 
@@ -218,23 +218,12 @@ public class ClientRegistryService {
 							+ "-" + patient.getPatientIdentifier());
 				}
 			}
-			Transaction item = requestHandler.sendRequest(methd, message,
-					parameters);
-
-			if (item instanceof ArchiveTransaction) {
-				item.setMessage("Update Patient Data with Id "
-						+ patient.getPatientId() + " succeded");
-				result = "Update Patient Data succeded";
-			} else if (item instanceof ProcessingTransaction) {
-				item.setMessage("UpdatePatientId=" + patient.getPatientId()
-						+ "");
-				result = "Update Patient Data failed, try again later";
-			} else if (item instanceof ErrorTransaction) {
-				result = "Update Patient Data failed, Contact Administrator";
-
-			}
-			response.handleResponse(item);
-			return result;
+			
+			Thread thread = new Thread(new PatientMessageThread(methd,message,parameters,patient,"Updating "));
+		    thread.setDaemon(true);
+		    thread.start();
+		 	 
+			return null;	
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return "";
