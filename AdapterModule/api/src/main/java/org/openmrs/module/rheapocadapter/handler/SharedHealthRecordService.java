@@ -9,24 +9,18 @@ import java.util.TreeMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Encounter;
-import org.openmrs.EncounterType;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientIdentifierType;
-import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.rheapocadapter.RHEAConstants;
 import org.openmrs.module.rheapocadapter.impl.HL7MessageTransformer;
 import org.openmrs.module.rheapocadapter.service.MessageTransformer;
 import org.openmrs.module.rheapocadapter.transaction.ArchiveTransaction;
 import org.openmrs.module.rheapocadapter.transaction.ErrorTransaction;
 import org.openmrs.module.rheapocadapter.transaction.ProcessingTransaction;
 import org.openmrs.module.rheapocadapter.transaction.Transaction;
+import org.openmrs.module.rheapocadapter.util.GetClinicalDataThread;
 import org.openmrs.module.rheapocadapter.util.MessagePostingThread;
-
-import ca.uhn.hl7v2.HL7Exception;
-import ca.uhn.hl7v2.model.Message;
-import ca.uhn.hl7v2.model.v25.message.ORU_R01;
 
 public class SharedHealthRecordService {
 	private ResponseHandler response = new ResponseHandler();
@@ -163,86 +157,21 @@ public class SharedHealthRecordService {
 						+ "-" + patient.getPatientIdentifier().getIdentifier();
 			}
 			log.info(clientId + " Client Id");
-			String relatedEncounters = "";
 
-			try {
-				EncounterService encService = Context.getEncounterService();
-				String[] methd = new String[] { "GET", "GetClinicalData" };
-				TreeMap<String, String> parameters = new TreeMap<String, String>();
-				parameters.put("patientId", clientId);
-				String createdSince = getLastDateEncounterReceived(patient);
-				if (createdSince != "" && createdSince != "null"
-						&& createdSince != null) {
-					log.info("createdSince " + createdSince);
-					parameters.put("createdInSince", createdSince);
-				}
-				Transaction item = requestHandler.sendRequest(methd, result,
-						parameters);
-				if (item instanceof ArchiveTransaction) {
-					String url = methd[0] + " " + item.getUrl();
-					item.setUrl(url);
-					result = item.getMessage();
-
-					HL7MessageTransformer messageTransformer = new HL7MessageTransformer();
-					Message message = (Message) messageTransformer
-							.translateMessage(result);
-
-					List<Encounter> encounterToSave = messageTransformer
-							.messageToEncounter((ORU_R01) message);
-					log.info(encounterToSave.size() + " encounter to save");
-					for (Encounter e : encounterToSave) {
-						EncounterType type = e.getEncounterType();
-						List<EncounterType> encTypes = encService
-								.getAllEncounterTypes();
-						log.info(encService.getEncounterType(type.getName()
-								+ " IMPORTED"));
-						boolean encounterTypeExist = false;
-						for (EncounterType ty : encTypes) {
-							if (ty.getName().equalsIgnoreCase(
-									type.getName() + " IMPORTED")) {
-								encounterTypeExist = true;
-							}
-						}
-						if (!encounterTypeExist) {
-							EncounterType newType = new EncounterType();
-							newType.setCreator(Context.getAuthenticatedUser());
-							newType.setDescription(type.getName() + " IMPORTED");
-							newType.setName(type.getName() + " IMPORTED");
-							encService.saveEncounterType(newType);
-
-						}
-						e.setEncounterType(encService.getEncounterType(type
-								.getName() + " IMPORTED"));
-						Encounter saved = encService.saveEncounter(e);
-						if (relatedEncounters.equals(""))
-							relatedEncounters += saved.getId();
-						else
-							relatedEncounters += "," + saved.getId();
-
-					}
-					ArchiveTransaction transaction = (ArchiveTransaction) item;
-					transaction.setRelatedEncounter(relatedEncounters);
-					response.handleResponse(transaction);
-					result = "Result after saving encounter "
-							+ relatedEncounters + " "
-							+ transaction.getMessage();
-				} else if (item instanceof ProcessingTransaction) {
-					result = "Get Clinical Data failed for " + clientId
-							+ ", try again later";
-					item.setMessage(result);
-					response.handleResponse(item);
-				} else if (item instanceof ErrorTransaction) {
-					result = "Get Clinical Data failed for " + clientId
-							+ ", Contact Administrator";
-					item.setMessage(result);
-					response.handleResponse(item);
-				}
-
-			} catch (HL7Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			String[] methd = new String[] { "GET", "GetClinicalData" };
+			TreeMap<String, String> parameters = new TreeMap<String, String>();
+			parameters.put("patientId", clientId);
+			String createdSince = getLastDateEncounterReceived(patient);
+			if (createdSince != "" && createdSince != "null"
+					&& createdSince != null) {
+				log.info("createdSince " + createdSince);
+				parameters.put("createdInSince", createdSince);
 			}
 
+			Thread thread = new Thread(new GetClinicalDataThread(methd,parameters, clientId));
+			thread.setDaemon(true);
+			thread.start();
+			
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
