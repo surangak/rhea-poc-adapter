@@ -206,12 +206,12 @@ public class ClientRegistryService {
 			if (patient.getPatientIdentifier("NID") != null) {
 				parameters.put("patientId",
 						"NID-" + patient.getPatientIdentifier("NID"));
-			} else if (patient.getPatientIdentifier("Mutuelle") != null) {
-				parameters.put("patientId",
-						"Mutuelle-" + patient.getPatientIdentifier("Mutuelle"));
-			} else if (patient.getPatientIdentifier("RAMA") != null) {
-				parameters.put("patientId",
-						"RAMA-" + patient.getPatientIdentifier("RAMA"));
+//			} else if (patient.getPatientIdentifier("Mutuelle") != null) {
+//				parameters.put("patientId",
+//						"MUT-" + patient.getPatientIdentifier("Mutuelle"));
+//			} else if (patient.getPatientIdentifier("RAMA") != null) {
+//				parameters.put("patientId",
+//						"RAM-" + patient.getPatientIdentifier("RAMA"));
 			} else {
 				if (patient.getPatientIdentifier().getIdentifierType()
 						.getName().equals("Primary Care ID Type")) {
