@@ -104,7 +104,7 @@ public class ConnectionHandler {
 			KeyManagementException {
 
 		InputStream keyStoreStream = getClass().getResourceAsStream(
-				"/web/module/resources/truststore.jks");
+				"/web/module/resources/truststore-prod.jks");
 
 		// Load the keyStore
 		KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
