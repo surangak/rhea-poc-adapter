@@ -13,17 +13,27 @@
  */
 package org.openmrs.module.rheapocadapter.web.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Encounter;
-import org.openmrs.api.context.Context;
 import org.openmrs.module.rheapocadapter.handler.EnteredHandler;
 import org.openmrs.module.rheapocadapter.transaction.ArchiveTransaction;
 import org.openmrs.module.rheapocadapter.transaction.ErrorTransaction;
 import org.openmrs.module.rheapocadapter.transaction.ProcessingTransaction;
+import org.openmrs.module.rheapocadapter.transaction.Transaction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,5 +101,192 @@ public class TransactionServiceController {
 		enteredHandler.sendBackEntered();
 
 		return "/module/rheapocadapter/backEnteredQueue";
+	}
+	@RequestMapping("/module/rheapocadapter/filterData.form")
+	public String filterDates(ModelMap map,HttpServletRequest request, HttpServletResponse response) throws ParseException{
+		
+		String dateFrom = request.getParameter("dateFrom");
+        String dateTo = request.getParameter("dateTo");
+        String qType =  request.getParameter("qType");
+        
+        map.addAttribute("dateFrom", dateFrom);
+        map.addAttribute("dateTo", dateTo);
+        EnteredHandler enteredHandler = new EnteredHandler();
+        
+        
+        
+        if(qType.equals("Archive")){
+        	List <Transaction> archiveTransactions;
+    		List<Transaction> archivedTransactions = new ArrayList<Transaction>();
+    		
+    		if(dateFrom.equals("") && dateTo.equals("")){
+        		archivedTransactions = (List<Transaction>) enteredHandler.getArchiveQueue();
+        		map.addAttribute("archiveTransactions", archivedTransactions);
+    		}
+    		else{
+    			archivedTransactions = (List<Transaction>) enteredHandler.getArchiveQueue();
+    			archiveTransactions = dateFilter(archivedTransactions, dateFrom, dateTo);
+        		Collections.reverse(archiveTransactions);
+    			map.addAttribute("archiveTransactions", archiveTransactions);
+    		}
+    		
+    		
+    		
+    		return "/module/rheapocadapter/manageQueue";
+        }
+        else if(qType.equals("Processing")){
+        	List<Transaction> processingTransactions;
+    		List<Transaction> processedTransactions = new ArrayList<Transaction>();
+    		
+    		if(dateFrom.equals("") && dateTo.equals("")){ 
+    			processedTransactions = (List<Transaction>) enteredHandler
+        				.getProcessingQueue();
+    		}
+    		else{
+    			processedTransactions = (List<Transaction>) enteredHandler
+        				.getProcessingQueue();
+    			processingTransactions = dateFilter(processedTransactions, dateFrom, dateTo);
+    			Collections.reverse(processingTransactions);
+    			map.addAttribute("processingTransactions", processingTransactions);
+    		}
+    		
+    		
+        	
+        	return "/module/rheapocadapter/processingQueue";
+        }
+        else if(qType.equals("Error")){
+        	
+        	List<Transaction> errorTransactions;
+    		List<Transaction> erredTransactions = new ArrayList<Transaction>();
+    		
+    		if(dateFrom.equals("") && dateTo.equals("")){ 
+    			erredTransactions = (List<Transaction>) enteredHandler
+        				.getProcessingQueue();
+    		}
+    		else{
+    			erredTransactions = (List<Transaction>) enteredHandler
+        				.getProcessingQueue();
+    			errorTransactions = dateFilter(erredTransactions, dateFrom, dateTo);
+    			Collections.reverse(errorTransactions);
+    			map.addAttribute("errorTransactions", errorTransactions);
+    		}
+        	
+        	return "/module/rheapocadapter/errorQueue";
+        	
+        }
+        else{
+        	
+        	//List<Transaction> errorTransactions;
+    		//List<Transaction> erredTransactions = new ArrayList<Transaction>();
+    		
+    		List<Encounter> encounterz = new ArrayList<Encounter>();
+    		
+    		//List<Encounter> encounter = enteredHandler.getEncounterNotSent();
+    		
+    		if(dateFrom.equals("") && dateTo.equals("")){ 
+    			encounterz = enteredHandler.getEncounterNotSent();
+    		}
+    		else{
+    			encounterz = enteredHandler.getEncounterNotSent();
+    			encounterz = encounterDateFilter(encounterz, dateFrom, dateTo);
+    			Collections.reverse(encounterz);
+    			map.addAttribute("encounterNotSent", encounterz);
+    		}
+        	
+        	return "/module/rheapocadapter/backEnteredQueue";
+        }
+        
+		
+	
+	}
+	private List<Transaction> dateFilter(List<Transaction> transactions, String dateFrom, String dateTo) throws ParseException{
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		
+		if (!dateFrom.trim().isEmpty() && dateTo.trim().isEmpty()) {
+			Iterator<Transaction> iterator = transactions.iterator();
+			while (iterator.hasNext()) {
+				if (iterator.next().getTimeRequestSent().after(df.parse(dateFrom))) {
+
+				} else {
+					iterator.remove();
+				}
+			}
+
+		} else if (dateFrom.trim().isEmpty() && !dateTo.trim().isEmpty()) {
+			Iterator<Transaction> iterator = transactions.iterator();
+			Date dt = increaseDate(df.parse(dateTo));
+			while (iterator.hasNext()) {
+				if (iterator.next().getTimeRequestSent().before(dt)) {
+
+				} else {
+					iterator.remove();
+				}
+			}
+
+		} else if (!dateFrom.trim().isEmpty() && !dateTo.trim().isEmpty()) {
+			Iterator<Transaction> iterator = transactions.iterator();
+			Date dt = increaseDate(df.parse(dateTo));
+			while (iterator.hasNext()) {
+				Date date = iterator.next().getTimeRequestSent();
+				if (date.after(df.parse(dateFrom)) && date.before(dt)) {
+                       
+				} else {
+					iterator.remove();
+				}
+			}
+
+		}
+		return transactions;
+		
+		
+	}
+private List<Encounter> encounterDateFilter(List<Encounter> encounterz, String dateFrom, String dateTo) throws ParseException{
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		
+		if (!dateFrom.trim().isEmpty() && dateTo.trim().isEmpty()) {
+			Iterator<Encounter> iterator = encounterz.iterator();
+			while (iterator.hasNext()) {
+				if (iterator.next().getEncounterDatetime().after(df.parse(dateFrom))) {
+
+				} else {
+					iterator.remove();
+				}
+			}
+
+		} else if (dateFrom.trim().isEmpty() && !dateTo.trim().isEmpty()) {
+			Iterator<Encounter> iterator = encounterz.iterator();
+			Date dt = increaseDate(df.parse(dateTo));
+			while (iterator.hasNext()) {
+				if (iterator.next().getEncounterDatetime().before(dt)) {
+
+				} else {
+					iterator.remove();
+				}
+			}
+
+		} else if (!dateFrom.trim().isEmpty() && !dateTo.trim().isEmpty()) {
+			Iterator<Encounter> iterator = encounterz.iterator();
+			Date dt = increaseDate(df.parse(dateTo));
+			while (iterator.hasNext()) {
+				Date date = iterator.next().getEncounterDatetime();
+				if (date.after(df.parse(dateFrom)) && date.before(dt)) {
+                       
+				} else {
+					iterator.remove();
+				}
+			}
+
+		}
+		return encounterz;
+		
+		
+	}
+	private Date increaseDate(Date date){
+		Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, 1); //minus number would decrement the days
+        return cal.getTime();
 	}
 }

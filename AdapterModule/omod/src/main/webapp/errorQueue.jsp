@@ -2,142 +2,77 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%-- <%@ taglib prefix="form" uri="resources/spring-form.tld"%> --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<openmrs:htmlInclude file="/moduleResources/rheapocadapter/jquery-1.4.4.min.js" />
-
-<br />
 <%@ include file="template/menu.jsp"%>
+<div>
+		<form method =" post " action = "${pageContext.request.contextPath}/module/rheapocadapter/filterData.form">
+			<span style="vertical-align: bottom;">Date From:<input
+				type="date" name="dateFrom" id="date_from" value="${dateFrom}"> Date To:<input
+				type="date" name="dateTo" id="date_to" value="${dateTo}"></span><span
+				style="vertical-align: bottom;">
+				<input type="hidden" value="Error" name="qType">
+				<input type="image"
+				src="${pageContext.request.contextPath}/moduleResources/rheapocadapter/media/images/refresh.png"
+				alt="Submit"></span>
+		</form>
+</div>
 <br />
-
+<script type="text/javascript">
+	var $j = jQuery.noConflict();
+	$j(document).ready(function() {
+		$j('#myTable').dataTable({
+			"sPaginationType":"full_numbers",
+            "bJQueryUI":true,
+            "aaSorting":[[0, "desc"]],
+            "aoColumns": [{ "bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false },
+                          { "bSortable": false }]
+		});
+	});
+</script>
 <div id="errorTransactions" style="text-align: center;">
 	<b><u>Error Transactions</u></b>
-	<div class="box">
-	<c:if test="${fn:length(errorTransactions) > 10}">
-	<span style="float:left;" class="prev"><button type="button">&lt;&lt;
-				Previous</button></span> <span class="next"><button type="button">Next
-				&gt;&gt;</button></span>
-	<span style="float:right;" class="prev" id="records"></span> 
-	</c:if>
-		<table class="paginated-table">
-			<tbody>
+</div><div>	
+		<table id="myTable" style="width: 100%;">
+			<thead>
 				<tr>
-					<th>#</th>
-					<th>id</th>
-					<th>timeRequestSent</th>
-					<th>Error</th>
-					<th>url</th>
-					<th>sender</th>
-					<th>error</th>
-					<th>Time Response Received</th>
+					
+					<th>ID</th>
+					<th>Time RequestSent</th>
+					<th>Message Type</th>
+					<th>Message</th>
+					<th>Sender ID</th>
+					<th>End Point</th>
 
 				</tr>
-
+				</thead>
+        <tbody>
 				<c:forEach var="errorTransactions" items="${errorTransactions}"
 					varStatus="num">
-					<tr class="${num.count%2!=0?'evenRow':'oddRow'}">
-						<td><b>${num.count}.</b></td>
+					<tr>
 						<td>${errorTransactions.id}</td>
 						<td>${errorTransactions.timeRequestSent}</td>
-						<td>${errorTransactions.message}</td>
-						<td>${errorTransactions.url}</td>
+						<td>Message Type</td>
+						<td><a href="#" class="opener" id="${num.count}">Show
+							Message</a>
+						<p id="url${num.count}" style="display: none;">${errorTransactions.url}</p>
+						<textarea id="txa${num.count}" rows="" cols=""
+							style="display: none;">${errorTransactions.message}</textarea></td>			
 						<td>${errorTransactions.sender}</td>
-						<td>${errorTransactions.error}</td>
-						<td>${errorTransactions.responseTimeReceived}</td>
+						<td><c:choose>
+							<c:when test="${fn:contains(errorTransactions.url, 'encounter')}">
+                                SHR
+							</c:when>
+							<c:otherwise>
+                                CR
+                            </c:otherwise>
+						</c:choose></td>
 
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
-<script type="text/javascript">
-	var maxRows = 10;
-	$('.paginated-table').each(
-			function() {
-				var cTable = $(this);
-				var cRows = cTable.find('tr:gt(0)');
-				var cRowCount = cRows.size();
-				var number_of_pages = Math.ceil(cRowCount/maxRows);
-				var whereAreWe = 1;
-				
-				var ret = "Showing Page "+ whereAreWe +" Of "+number_of_pages+" With "+cRowCount+" Mesages";
-				//var ret = "Total Messages = " + cRowCount +" Pages = "+number_of_pages;
-				$(records).html("<i>&nbsp;&nbsp;" + ret + "</i>");
-				if (cRowCount < maxRows) {
-					return;
-				}
 
-				
-				/* hide all rows above the max initially */
-				cRows.filter(':gt(' + (maxRows - 1) + ')').hide();
 
-				var cPrev = cTable.siblings('.prev');
-				var cNext = cTable.siblings('.next');
-
-				/* start with previous disabled */
-				cPrev.addClass('disabled');
-
-				cPrev.click(function() {
-					var cFirstVisible = cRows.index(cRows.filter(':visible'));
-					if(whereAreWe > 1){
-					whereAreWe = whereAreWe - 1;
-					}
-					ret = "Showing Page "+ whereAreWe +" Of "+number_of_pages+" With "+cRowCount+" Mesages";
-					$(records).html("<i>&nbsp;&nbsp;" + ret + "</i>");
-					
-					if (cPrev.hasClass('disabled')) {
-						return false;
-					}
-
-					cRows.hide();
-					if (cFirstVisible - maxRows - 1 > 0) {
-						cRows.filter(
-								':lt(' + cFirstVisible + '):gt('
-										+ (cFirstVisible - maxRows - 1) + ')')
-								.show();
-					} else {
-						cRows.filter(':lt(' + cFirstVisible + ')').show();
-					}
-
-					if (cFirstVisible - maxRows <= 0) {
-						cPrev.addClass('disabled');
-					}
-
-					cNext.removeClass('disabled');
-
-					return false;
-				});
-
-				cNext.click(function() {
-					
-					var cFirstVisible = cRows.index(cRows.filter(':visible'));
-					if(whereAreWe < number_of_pages){
-					whereAreWe = whereAreWe + 1;
-					}
-					ret = "Showing Page "+ whereAreWe +" Of "+number_of_pages+" With "+cRowCount+" Mesages";
-					$(records).html("<i>&nbsp;&nbsp;" + ret + "</i>");
-					
-					if (cNext.hasClass('disabled')) {
-						return false;
-					}
-
-					cRows.hide();
-					cRows.filter(
-							':lt(' + (cFirstVisible + 2 * maxRows) + '):gt('
-									+ (cFirstVisible + maxRows - 1) + ')')
-							.show();
-
-					if (cFirstVisible + 2 * maxRows >= cRows.size()) {
-						cNext.addClass('disabled');
-					}
-
-					cPrev.removeClass('disabled');
-
-					return false;
-				});
-
-			});
-	
-</script>
-	</div>
 </div>
-
+<%@ include file="template/modal.jsp"%>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>
