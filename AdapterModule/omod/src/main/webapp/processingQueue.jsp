@@ -81,8 +81,8 @@
 				<tr>
 					<td>${processingTransactions.id}</td>
 					<td>${processingTransactions.timeRequestSent}</td>
-					<td>Message Type</td>
-					<td><a href="#" class="opener" id="${num.count}">Show
+					<td>${processingTransactions.method}</td>
+					<td><a href="#" class="opener" id="${num.count}">View
 							Message</a>
 						<p id="url${num.count}" style="display: none;">${processingTransactions.url}</p>
 						<textarea id="txa${num.count}" rows="" cols=""

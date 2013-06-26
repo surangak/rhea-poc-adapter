@@ -14,11 +14,8 @@
 
 package org.openmrs.module.rheapocadapter.util;
 
-import java.util.TreeMap;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
@@ -31,116 +28,122 @@ import org.openmrs.module.rheapocadapter.transaction.ProcessingTransaction;
 import org.openmrs.module.rheapocadapter.transaction.Transaction;
 import org.openmrs.scheduler.SchedulerConstants;
 
-public class PatientMessageThread implements Runnable{
-	
-	private Log log = LogFactory.getLog(this.getClass());
+import java.util.TreeMap;
 
-	private RequestHandler requestHandler = new RequestHandler();
-	private ResponseHandler response = new ResponseHandler();
+public class PatientMessageThread implements Runnable {
 
-	private String[] methd;
-	private String message;
-	private String result = "";
-	private Patient patient;
-	private String transactionType;
+    private Log log = LogFactory.getLog(this.getClass());
 
-	public Patient getPatient() {
-		return patient;
-	}
+    private RequestHandler requestHandler = new RequestHandler();
+    private ResponseHandler response = new ResponseHandler();
 
-	public void setPatient(Patient patient) {
-		this.patient = patient;
-	}
-	
-	public String getTransactionType() {
-		return transactionType;
-	}
+    private String[] methd;
+    private String message;
+    private String result = "";
+    private Patient patient;
+    private String transactionType;
 
-	public void setTransactionType(String transactionType) {
-		this.transactionType = transactionType;
-	}
+    public Patient getPatient() {
+        return patient;
+    }
 
-	public PatientMessageThread(String[] methd2, String message2,
-			TreeMap<String, String> parameters2, Patient patient2, String transactionType2) {
-		this.methd = methd2;
-		this.message = message2;
-		this.parameters = parameters2;
-		this.patient = patient2;
-		this.transactionType = transactionType2;
-	}
-	
-	public TreeMap<String, String> getParameters() {
-		return parameters;
-	}
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(String transactionType) {
+        if (transactionType.equalsIgnoreCase("Updating")) {
+            this.transactionType = "UpdatePatientId";
+        } else if (transactionType.equalsIgnoreCase("Saving")) {
+            this.transactionType = "SavePatientId";
+
+        }
+    }
+
+    public PatientMessageThread(String[] methd2, String message2,
+                                TreeMap<String, String> parameters2, Patient patient2, String transactionType2) {
+        this.methd = methd2;
+        this.message = message2;
+        this.parameters = parameters2;
+        this.patient = patient2;
+        setTransactionType(transactionType2);
+    }
+
+    public TreeMap<String, String> getParameters() {
+        return parameters;
+    }
 
 
-	public void setParameters(TreeMap<String, String> parameters) {
-		this.parameters = parameters;
-	}
+    public void setParameters(TreeMap<String, String> parameters) {
+        this.parameters = parameters;
+    }
 
 
-	private TreeMap<String, String> parameters = new TreeMap<String, String>();
-	
-	
+    private TreeMap<String, String> parameters = new TreeMap<String, String>();
+
+
     public String getMessage() {
-		return message;
-	}
+        return message;
+    }
 
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
 
-	public String[] getMethd() {
-		return methd;
-	}
+    public String[] getMethd() {
+        return methd;
+    }
 
 
-	public void setMethd(String[] methd) {
-		this.methd = methd;
-	}
+    public void setMethd(String[] methd) {
+        this.methd = methd;
+    }
 
-	  /**
+    /**
      * Authenticate the context so the task can call service layer.
      */
     protected void authenticate() {
-            try {
-                    AdministrationService adminService = Context.getAdministrationService();
-                    Context.authenticate(adminService.getGlobalProperty(SchedulerConstants.SCHEDULER_USERNAME_PROPERTY),
-                        adminService.getGlobalProperty(SchedulerConstants.SCHEDULER_PASSWORD_PROPERTY));
-                    
-            }
-            catch (ContextAuthenticationException e) {
-                    log.error("Error authenticating user");
-            }
+        try {
+            AdministrationService adminService = Context.getAdministrationService();
+            Context.authenticate(adminService.getGlobalProperty(SchedulerConstants.SCHEDULER_USERNAME_PROPERTY),
+                    adminService.getGlobalProperty(SchedulerConstants.SCHEDULER_PASSWORD_PROPERTY));
+
+        } catch (ContextAuthenticationException e) {
+            log.error("Error authenticating user");
+        }
     }
-    
 
-	@Override
+
+    @Override
     public void run() {
-		Context.openSession();
-		if (!Context.isAuthenticated()) {
-			log.info("Authenticating ...");
-			authenticate();
-		}
-		 
-		Transaction item = requestHandler.sendRequest(methd, message,
-				parameters);
+        Context.openSession();
+        if (!Context.isAuthenticated()) {
+            log.info("Authenticating ...");
+            authenticate();
+        }
 
-		if (item instanceof ArchiveTransaction) {
-			item.setMessage(transactionType+ "patient with Id"
-					+ patient.getPatientId() + " Succeded");
-			result = "Registration message sending succeded";
-		} else if (item instanceof ProcessingTransaction) {
-			item.setMessage(transactionType+ "PatientId=" + patient.getPatientId() + "");
-			result = "Registration message failed, try again later";
-		} else if (item instanceof ErrorTransaction) {
-			result = "Registration message failed, Contact Administrator";
+        Transaction item = requestHandler.sendRequest(methd, message,
+                parameters);
 
-		}
-		response.handleResponse(item);	
-		// close session
-		Context.closeSession();
-}
+        if (item instanceof ArchiveTransaction) {
+            item.setMessage(transactionType + "="
+                    + patient.getPatientId());
+            result = "Registration message sending succeded";
+        } else if (item instanceof ProcessingTransaction) {
+            item.setMessage(transactionType + "=" + patient.getPatientId() + "");
+            result = "Registration message failed, try again later";
+        } else if (item instanceof ErrorTransaction) {
+            result = "Registration message failed, Contact Administrator";
+
+        }
+        response.handleResponse(item);
+        // close session
+        Context.closeSession();
+    }
 }

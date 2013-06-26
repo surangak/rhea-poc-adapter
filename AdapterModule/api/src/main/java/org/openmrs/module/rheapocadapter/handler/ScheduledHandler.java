@@ -174,21 +174,23 @@ public class ScheduledHandler extends AbstractTask {
 			String clientId = "";
 			PatientIdentifierType nid = Context.getPatientService()
 					.getPatientIdentifierTypeByName("NID");
-			PatientIdentifierType mutuelle = Context.getPatientService()
+			/*PatientIdentifierType mutuelle = Context.getPatientService()
 					.getPatientIdentifierTypeByName("Mutelle");
 			PatientIdentifierType rama = Context.getPatientService()
-					.getPatientIdentifierTypeByName("RAMA");
+					.getPatientIdentifierTypeByName("RAMA");*/
 			PatientIdentifierType primaryCare = Context.getPatientService()
 					.getPatientIdentifierTypeByName("Primary Care ID Type");
 
 			for (PatientIdentifier id : identifiers) {
 				if (id.getIdentifierType().equals(nid)) {
 					clientId = nid + "-" + id.getIdentifier();
-				} else if (id.getIdentifierType().equals(mutuelle)) {
+				} 
+				/*else if (id.getIdentifierType().equals(mutuelle)) {
 					clientId = mutuelle + "-" + id.getIdentifier();
 				} else if (id.getIdentifierType().equals(rama)) {
 					clientId = rama + "-" + id.getIdentifier();
-				} else if (id.getIdentifierType().equals(primaryCare)) {
+				} */
+				else if (id.getIdentifierType().equals(primaryCare)) {
 					implementationId = implementationId.toLowerCase();
 					String fosaid = implementationId.substring(implementationId
 							.indexOf("rwanda") + 6);
@@ -197,15 +199,17 @@ public class ScheduledHandler extends AbstractTask {
 				}
 
 			}
-			if (clientId == "") {
-
-				clientId = e.getPatient().getPatientIdentifier()
-						.getIdentifierType()
-						+ "-"
-						+ e.getPatient().getPatientIdentifier().getIdentifier();
-			}
+//			if (clientId == "") {
+//
+//				clientId = e.getPatient().getPatientIdentifier()
+//						.getIdentifierType()
+//						+ "-"
+//						+ e.getPatient().getPatientIdentifier().getIdentifier();
+//			}
+			if(clientId != ""){
 			log.info("ClientId from ScheduledHandler =" + clientId);
 			sharedHealthRecordService.savePatientEncounter(e, clientId);
+			}
 
 		}
 	}

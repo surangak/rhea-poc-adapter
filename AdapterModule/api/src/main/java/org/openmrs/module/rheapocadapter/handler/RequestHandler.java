@@ -80,7 +80,7 @@ public class RequestHandler {
                 Date receiveDateTime = new Date();
                 log.info("After callGet " + result[0] + " = " + result[1]);
                 Transaction transaction = generateTransaction(sendDateTime,
-                        result[1], url, sender);
+                        result[1], method[0] + " " + url, sender);
                 Transaction item = response
                         .generateMessage(transaction,
                                 Integer.parseInt(result[0]), method[0],
@@ -95,7 +95,7 @@ public class RequestHandler {
                 Date receiveDateTime = new Date();
 
                 Transaction transaction = generateTransaction(sendDateTime,
-                        result[1], url, sender);
+                        result[1], method[0] + " " + url, sender);
                 Transaction item = response
                         .generateMessage(transaction,
                                 Integer.parseInt(result[0]), method[0],
@@ -107,7 +107,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method[0] + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 400,
                     method[0], receiveDateTime);
             log.error("KeyManagementException generated" + e.getMessage());
@@ -116,7 +116,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method[0] + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 400,
                     method[0], receiveDateTime);
             log.error("KeyStoreException generated" + e.getMessage());
@@ -125,7 +125,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method[0] + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 400,
                     method[0], receiveDateTime);
             log.error("NoSuchAlgorithmException generated" + e.getMessage());
@@ -134,7 +134,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method[0] + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 400,
                     method[0], receiveDateTime);
             log.error("CertificateException generated" + e.getMessage());
@@ -143,7 +143,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method[0] + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 400,
                     method[0], receiveDateTime);
             log.error("TransformerFactoryConfigurationError generated"
@@ -153,7 +153,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method[0] + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 600,
                     method[0], receiveDateTime);
             log.error("SocketTimeoutException generated " + e.getMessage());
@@ -162,7 +162,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method[0] + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 600,
                     method[0], receiveDateTime);
             log.error("IOException generated " + e.getMessage());
@@ -172,7 +172,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method[0] + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 400,
                     method[0], receiveDateTime);
             log.error("PatientNotInCRError generated"
@@ -180,9 +180,9 @@ public class RequestHandler {
             return item;
         }
 
-    log.info("Gonna return null");
-    return null;
-}
+        log.info("Gonna return null");
+        return null;
+    }
 
     /**
      * this works with the sheduled task
@@ -208,7 +208,7 @@ public class RequestHandler {
                 String[] result = conn.callGet(url);
                 Date receiveDateTime = new Date();
                 Transaction transaction = generateTransaction(sendDateTime,
-                        result[1], url, sender);
+                        result[1], method + " " + url, sender);
                 Transaction item = response.generateMessage(transaction,
                         Integer.parseInt(result[0]), method, receiveDateTime);
                 return item;
@@ -220,7 +220,7 @@ public class RequestHandler {
                 String[] result = conn.callPostAndPut(url, body, method);
                 Date receiveDateTime = new Date();
                 Transaction transaction = generateTransaction(sendDateTime,
-                        result[1], url, sender);
+                        result[1], method + " " + url, sender);
                 Transaction item = response.generateMessage(transaction,
                         Integer.parseInt(result[0]), method, receiveDateTime);
                 return item;
@@ -230,7 +230,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 400,
                     method, receiveDateTime);
             log.error("KeyManagementException generated" + e.getMessage());
@@ -239,7 +239,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 400,
                     method, receiveDateTime);
             log.error("KeyStoreException generated" + e.getMessage());
@@ -248,7 +248,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 400,
                     method, receiveDateTime);
             log.error("NoSuchAlgorithmException generated" + e.getMessage());
@@ -257,7 +257,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 400,
                     method, receiveDateTime);
             log.error("CertificateException generated" + e.getMessage());
@@ -266,7 +266,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 400,
                     method, receiveDateTime);
             log.error("TransformerFactoryConfigurationError generated"
@@ -276,7 +276,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 600,
                     method, receiveDateTime);
             log.error("SocketTimeoutException generated " + e.getMessage());
@@ -285,7 +285,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 600,
                     method, receiveDateTime);
             log.error("IOException generated " + e.getMessage());
@@ -295,7 +295,7 @@ public class RequestHandler {
             Date sendDateTime = new Date();
             Date receiveDateTime = new Date();
             Transaction transaction = generateTransaction(sendDateTime,
-                    e.getMessage(), url, sender);
+                    e.getMessage(), method + " " + url, sender);
             Transaction item = response.generateMessage(transaction, 400,
                     method, receiveDateTime);
             log.error("IOException generated " + e.getMessage());

@@ -50,8 +50,33 @@
 					<tr>
 						<td>${errorTransactions.id}</td>
 						<td>${errorTransactions.timeRequestSent}</td>
-						<td>Message Type</td>
-						<td><a href="#" class="opener" id="${num.count}">Show
+						<td><c:choose>
+							<c:when test="${fn:contains(errorTransactions.url, 'PUT')}">
+                                PUT
+							</c:when>
+							<c:when test="${fn:contains(archiveTransactions.message, 'Update')}">
+                                PUT
+							</c:when>
+							<c:when test="${fn:contains(errorTransactions.url, 'POST')}">
+                                POST
+							</c:when>
+							<c:when test="${fn:contains(errorTransactions.message, 'Encounter')}">
+                                POST
+							</c:when>
+							<c:when test="${fn:contains(archiveTransactions.message, 'Sav')}">
+                                POST
+							</c:when>
+							<c:when test="${fn:contains(errorTransactions.url, 'GET')}">
+                                GET
+							</c:when>
+							<c:when test="${fn:contains(errorTransactions.message, 'Get')}">
+                                GET
+							</c:when>
+							<c:otherwise>
+                                N/A
+                            </c:otherwise>
+						</c:choose></td>
+						<td><a href="#" class="opener" id="${num.count}">View
 							Message</a>
 						<p id="url${num.count}" style="display: none;">${errorTransactions.url}</p>
 						<textarea id="txa${num.count}" rows="" cols=""

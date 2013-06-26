@@ -161,11 +161,11 @@ public class TransactionServiceController {
     		
     		if(dateFrom.equals("") && dateTo.equals("")){ 
     			erredTransactions = (List<Transaction>) enteredHandler
-        				.getProcessingQueue();
+        				.getErrorQueue();
     		}
     		else{
     			erredTransactions = (List<Transaction>) enteredHandler
-        				.getProcessingQueue();
+        				.getErrorQueue();
     			errorTransactions = dateFilter(erredTransactions, dateFrom, dateTo);
     			Collections.reverse(errorTransactions);
     			map.addAttribute("errorTransactions", errorTransactions);

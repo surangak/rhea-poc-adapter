@@ -103,7 +103,7 @@ public class ClientRegistryService {
 			String[] methd = new String[] { "POST", "RegisterNew" };
 			TreeMap<String, String> parameters = new TreeMap<String, String>();
 
-			Thread thread = new Thread(new PatientMessageThread(methd,message,parameters,patient,"Saving "));
+			Thread thread = new Thread(new PatientMessageThread(methd,message,parameters,patient,"Saving"));
 		    thread.setDaemon(true);
 		    thread.start();
 		 	 
@@ -219,7 +219,7 @@ public class ClientRegistryService {
 				}
 			}
 			
-			Thread thread = new Thread(new PatientMessageThread(methd,message,parameters,patient,"Updating "));
+			Thread thread = new Thread(new PatientMessageThread(methd,message,parameters,patient,"Updating"));
 		    thread.setDaemon(true);
 		    thread.start();
 		 	 

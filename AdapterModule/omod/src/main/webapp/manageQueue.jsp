@@ -65,13 +65,28 @@
 
 					<td>${archiveTransactions.id}</td>
 					<td>${archiveTransactions.timeRequestSent}</td>
-					<td><c:if test="${num.count%2!=0}">
+					<%-- <td><c:if test="${num.count%2!=0}">
 				POST
 				</c:if> <c:if test="${num.count%2==0}">
 				PUT
-				</c:if></td>
+				</c:if></td> --%>
+				<td>
+				<c:choose>
+							<c:when test="${fn:contains(archiveTransactions.message, 'Update')}">
+                                PUT
+							</c:when>
+							<c:when test="${fn:contains(archiveTransactions.message, 'Sav') ||fn:contains(archiveTransactions.url, 'POST') }">
+                                POST
+							</c:when>
+							<c:otherwise>
+                                GET
+                            </c:otherwise>
+						</c:choose>
+				
+				
+				</td>
 					<!--<td><a href="#" class="opener" id="${num.count}" onclick="showMessageDialog('${archiveTransactions.message}');">Show Message</a>-->
-					<td><a href="#" class="opener" id="${num.count}">Show
+					<td><a href="#" class="opener" id="${num.count}">View
 							Message</a>
 						<p id="url${num.count}" style="display: none;">${archiveTransactions.url}</p>
 						<textarea id="txa${num.count}" rows="" cols=""

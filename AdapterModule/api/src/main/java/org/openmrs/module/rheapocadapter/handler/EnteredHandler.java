@@ -419,9 +419,41 @@ public class EnteredHandler {
                 log.info(idInMessage + " ");
                 idInMessage = idInMessage.split("=")[1];
                 idInMessage = idInMessage.trim();
-                queueService.removeQueue(trans);
                 patients.add(patService.getPatient(Integer
                         .parseInt(idInMessage)));
+
+            } else {
+
+                idInMessage = idInMessage.replaceAll(",", "");
+                idInMessage = idInMessage.replace("Succeded", "").trim();
+                if (idInMessage.startsWith("Saving")) {
+                    log.info(idInMessage + " ");
+                    String[] idSplited = idInMessage.split(" ");
+                    idInMessage = idSplited[idSplited.length - 1];
+                    idInMessage = idInMessage.trim();
+                    if (idInMessage.startsWith("Id")) {
+                        idInMessage = idInMessage.substring(2);
+                        if (idInMessage.startsWith("s")) {
+                            idInMessage = idInMessage.substring(1);
+                        }
+                        patients.add(patService.getPatient(Integer
+                                .parseInt(idInMessage)));
+                    }else if(idInMessage.startsWith("PatientId")){
+                        idInMessage = idInMessage.split("=")[1];
+                        idInMessage = idInMessage.trim();
+                        patients.add(patService.getPatient(Integer
+                                .parseInt(idInMessage)));
+
+                    }
+
+                } else if ((idInMessage.startsWith("UpdatePatientId="))) {
+
+                    log.info(idInMessage + " ");
+                    idInMessage = idInMessage.split("=")[1];
+                    idInMessage = idInMessage.trim();
+                    patients.add(patService.getPatient(Integer
+                            .parseInt(idInMessage)));
+                }
 
             }
 
@@ -429,25 +461,26 @@ public class EnteredHandler {
         return patients;
     }
 
+
     public List<Patient> getPatientInArchiveQueues() {
         List<ArchiveTransaction> archiveTransaction = (List<ArchiveTransaction>) getArchiveQueue();
         List<Patient> patients = new ArrayList<Patient>();
         patients.addAll(getPatientFromTransaction(archiveTransaction));
-        return (patients.isEmpty()) ? null : patients;
+        return patients;
     }
 
     public List<Patient> getPatientInProcessingQueues() {
         List<ProcessingTransaction> processingTransaction = (List<ProcessingTransaction>) getProcessingQueue();
         List<Patient> patients = new ArrayList<Patient>();
         patients.addAll(getPatientFromTransaction(processingTransaction));
-        return (patients.isEmpty()) ? null : patients;
+        return patients;
     }
 
     public List<Patient> getPatientInErrorQueues() {
         List<ErrorTransaction> errorQueue = (List<ErrorTransaction>) getErrorQueue();
         List<Patient> patients = new ArrayList<Patient>();
         patients.addAll(getPatientFromTransaction(errorQueue));
-        return (patients.isEmpty()) ? null : patients;
+        return patients;
     }
 
 
