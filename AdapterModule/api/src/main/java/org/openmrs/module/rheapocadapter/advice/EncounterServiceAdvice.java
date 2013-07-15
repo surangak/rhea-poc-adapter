@@ -197,7 +197,7 @@ public class EncounterServiceAdvice implements AfterReturningAdvice {
 
 	private PatientIdentifier getPatientIdentifierByIdentifierType(
 			Patient patient, PatientIdentifierType idType) {
-		return ((patient.getPatientIdentifier(idType) != null) && (patient
+		return ((idType != null) && (patient.getPatientIdentifier(idType) != null) && (patient
 				.getPatientIdentifier(idType).getIdentifierType()
 				.equals(idType))) ? (patient.getPatientIdentifier(idType))
 				: null;
