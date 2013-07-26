@@ -1,74 +1,74 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!--<dataset>-->
-
-    <!--&lt;!&ndash;  The main patient &ndash;&gt;-->
-    <!--<location location_id="1" name="Test Location" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="ef93c695-ac43-450a-93f8-4b2b4d50a3c8"/>-->
-    <!--<patient patient_id="2" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>-->
-    <!--<patient_identifier patient_identifier_id="1" patient_id="2" identifier="1234" identifier_type="10" preferred="1" location_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="1ac98ec8-e9d9-4626-998c-c795c2f0aa9f"/>-->
-    <!--<patient_identifier_type patient_identifier_type_id="10" name="ECID" description="Test description" check_digit="false" creator="1" date_created="2005-01-01 00:00:00.0" required="false" retired="false" uuid="0cbecb62-7249-4f91-8edf-d0206ecceb63"/>-->
-    <!--<person person_id="2" uuid="5631b434-78aa-102b-91a0-001e378eb67e" gender="M" birthdate="1950-04-01" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>-->
-    <!--<person_name person_name_id="2" preferred="true" person_id="2" given_name="John" middle_name=" " family_name="Doe" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="0f1f7d08-076b-4fc6-acac-4bb91515141e"/>-->
-    <!--<person person_id="1000" uuid="5631b434-78aa-102b-91a0-001e378eb671" gender="M" birthdate="1950-04-01" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>-->
-    <!--&lt;!&ndash; The end of the main patient object &ndash;&gt;-->
-
-    <!--&lt;!&ndash;  The patient to retire  &ndash;&gt;-->
-    <!--<patient patient_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>-->
-    <!--<patient_identifier patient_identifier_id="2" patient_id="1" identifier="2345" identifier_type="10" preferred="1" location_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="1ac98ec8-e9d9-4626-998c-c795c2f0aa1A"/>-->
-    <!--<person person_id="1" uuid="5631b434-78aa-122b-91a0-001e378eb67e" gender="M" birthdate="1950-04-01" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>-->
-    <!--<person_name person_name_id="1" preferred="true" person_id="1" given_name="John" middle_name=" " family_name="Doe" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="0f1f7d08-076b-4fc6-acac-1eb91515141e"/>-->
-
-    <!--&lt;!&ndash;  The patient to retire &ndash;&gt;-->
-
-    <!--&lt;!&ndash;  The main patients data &ndash;&gt;-->
-    <!--<encounter encounter_id="11" encounter_type="1" patient_id="2" location_id="1" encounter_datetime="2005-01-01 00:00:00.0" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="f13d6fae-baa9-4553-955d-920098bec08f"/>-->
-    <!--<encounter_type encounter_type_id="1" name="Test Enc Type A" description="Some desc" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="2b377dba-62c3-4e53-91ef-b51c68899890"/>-->
-
-    <!--&lt;!&ndash;  The main patients data &ndash;&gt;-->
-
-    <!--&lt;!&ndash;  The patient to retire  &ndash;&gt;-->
-    <!--<encounter encounter_id="22" encounter_type="1" patient_id="1" location_id="1" encounter_datetime="2005-01-01 00:00:00.0" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="f13d6fae-baa9-4553-955d-920098bef45a"/>-->
-    <!--<encounter_type encounter_type_id="1" name="Test Enc Type B" description="Some desc" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="2b377dba-62c3-4e53-91ef-b51c68899890"/>-->
-
-    <!--<encounter encounter_id="33" encounter_type="1" patient_id="1" location_id="1" encounter_datetime="2005-01-01 00:00:00.0" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="f13d6fae-baa9-4553-955d-920098becs12a"/>-->
-    <!--<encounter_type encounter_type_id="1" name="Test Enc Type C" description="Some desc" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="2b377dba-62c3-4e53-91ef-b51c68899890"/>-->
-
-    <!--<concept concept_id="1" retired="false" datatype_id="1" class_id="0" is_set="false" creator="1" date_created="2005-01-01 00:00:00.0" uuid="4a5048b1-cf85-4c64-9339-7cab41e5e364"/>-->
-    <!--<concept_numeric concept_id="1" hi_absolute="50.0" low_absolute="2.0" precise="false"/>-->
-    <!--<concept_description concept_description_id="1" concept_id="1" description="this is a description" locale="en" creator="1" date_created="2005-01-01 00:00:00.0" uuid="8b46218d-8dcf-4f45-91b5-837d11486a53"/>-->
-    <!--<concept_name concept_id="1" name="Some concept name" locale="en" creator="1" date_created="2005-01-01 00:00:00.0" concept_name_id="1" voided="false" uuid="8add472b-156b-468f-ad62-d9333fb86976" />-->
-    <!--<obs obs_id="132" encounter_id="11" person_id="2" concept_id="1" obs_datetime="2006-02-09 00:00:00.0" location_id="1" value_numeric="1.0" creator="1" date_created="2006-02-10 15:57:35.0" voided="false" uuid="be3a4d7a-f9ab-47bb-aaad-bc0b452fcda4"/>-->
-    <!--<obs obs_id="133" encounter_id="22" person_id="1" concept_id="1" obs_datetime="2006-02-10 00:00:00.0" location_id="1" value_numeric="2.0" creator="1" date_created="2006-02-11 15:57:35.0" voided="false" uuid="b5499df2-b17c-4b39-88a6-44591c165569"/>-->
-    <!--<obs obs_id="134" encounter_id="33" person_id="1" concept_id="1" obs_datetime="2006-02-11 00:00:00.0" location_id="1" value_numeric="3.0" creator="1" date_created="2006-02-12 15:57:35.0" voided="false" uuid="efbba621-51ca-428b-8671-4f4eede10b4b"/>-->
-    <!--<obs obs_id="135" person_id="1" concept_id="1" obs_datetime="2006-02-11 00:00:00.0" location_id="1" value_numeric="3.0" creator="1" date_created="2006-02-12 15:57:35.0" voided="false" uuid="efbba621-51ca-428b-8671-5f4eede10b4b"/>-->
-
-    <!--&lt;!&ndash;  The patient to retire &ndash;&gt;-->
-
-    <!--&lt;!&ndash; Provider information &ndash;&gt;-->
-    <!--<users user_id="1" person_id="1" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="6f763a67-2bd1-451c-93b9-95caeb36cc24" />-->
-    <!--<person person_id="1" gender="M" dead="false" birthdate="2005-01-01 00:00:00.0" creator="1" voided="false" date_created="2005-01-01 00:00:00.0" uuid="2e3d45d4-2311-11e0-8dbd-d48564b96044"/>-->
-    <!--<person_name person_id="1" family_name="TestUser" given_name="given_user" person_name_id="1" uuid="2e3d45d4-2311-11e0-8dbd-d48564b96031" preferred="1" middle_name =" " creator = "1" date_created ="2005-01-01 00:00:00.0" voided = "false"/>-->
-    <!--<person_attribute_type person_attribute_type_id="1" name="EPID" description="EPID No." format="java.lang.String" searchable="false" creator="1" date_created="2007-05-03 09:20:37.0" uuid="cdc6a460-2700-102b-80cb-0017a47871b2" retired="false" sort_weight="1"/>-->
-    <!--<person_attribute person_attribute_id="1" person_id="1" value="3525410" person_attribute_type_id="1" creator="1" date_created="2007-05-03 09:20:37.0" voided="false" uuid="ca9a9bac-2700-102b-80cb-0017a47871b2"/>-->
-
-    <!--&lt;!&ndash;<encounter_provider encounter_provider_id="1" encounter_id="11" encounter_role_id="1" provider_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="c1897cef-05d4-4f71-bc1f-078ddba780ae" />&ndash;&gt;-->
-
-<!--</dataset>-->
 <dataset>
-    <encounter encounter_id="1" encounter_type="1" patient_id="2" location_id="1" encounter_datetime="2005-01-01 00:00:00.0" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="f13d6fae-baa9-4553-955d-920098bec08f"/>
-    <encounter_type encounter_type_id="1" name="Test Enc Type B" description="Some desc" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="2b377dba-62c3-4e53-91ef-b51c68899890"/>
-    <location location_id="1" name="Test Location" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="3941dd4b-0b6d-4481-b979-ccdd38c76cb4"/>
-    <patient patient_id="2" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>
-    <patient_identifier patient_identifier_id="1" patient_id="2" identifier="1234" identifier_type="1" preferred="1" location_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="e78bc0fe-6370-4766-b46f-8f4c658fe22b"/>
-    <patient_identifier_type patient_identifier_type_id="1" name="Test Identifier Type" description="Test description" check_digit="false" creator="1" date_created="2005-01-01 00:00:00.0" required="false" retired="false" uuid="2238b039-7f77-4384-a912-360dd154f0d1"/>
-    <person person_id="2" gender="M" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="b9cb4fb6-6ce3-4475-b08d-6e1a7d4345ce"/>
-    <person_name person_name_id="2" preferred="true" person_id="2" given_name="John" middle_name=" " family_name="Doe" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="8e045532-bab6-4ef0-9df2-cb8f94e2eb16"/>
 
+    <!--  The main patient -->
+    <location location_id="1" name="Test Location" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="ef93c695-ac43-450a-93f8-4b2b4d50a3c8"/>
+    <patient patient_id="2" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>
+    <patient_identifier patient_identifier_id="1" patient_id="2" identifier="1234" identifier_type="10" preferred="1" location_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="1ac98ec8-e9d9-4626-998c-c795c2f0aa9f"/>
+    <patient_identifier_type patient_identifier_type_id="10" name="ECID" description="Test description" check_digit="false" creator="1" date_created="2005-01-01 00:00:00.0" required="false" retired="false" uuid="0cbecb62-7249-4f91-8edf-d0206ecceb63"/>
+    <person person_id="2" uuid="5631b434-78aa-102b-91a0-001e378eb67e" gender="M" birthdate="1950-04-01" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>
+    <person_name person_name_id="2" preferred="true" person_id="2" given_name="John" middle_name=" " family_name="Doe" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="0f1f7d08-076b-4fc6-acac-4bb91515141e"/>
+    <person person_id="1000" uuid="5631b434-78aa-102b-91a0-001e378eb671" gender="M" birthdate="1950-04-01" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>
+    <!-- The end of the main patient object -->
+
+    <!--  The patient to retire  -->
+    <patient patient_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>
+    <patient_identifier patient_identifier_id="2" patient_id="1" identifier="2345" identifier_type="10" preferred="1" location_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="1ac98ec8-e9d9-4626-998c-c795c2f0aa1A"/>
+    <person person_id="1" uuid="5631b434-78aa-122b-91a0-001e378eb67e" gender="M" birthdate="1950-04-01" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>
+    <person_name person_name_id="1" preferred="true" person_id="1" given_name="John" middle_name=" " family_name="Doe" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="0f1f7d08-076b-4fc6-acac-1eb91515141e"/>
+
+    <!--  The patient to retire -->
+
+    <!--  The main patients data -->
+    <encounter encounter_id="11" encounter_type="1" patient_id="2" location_id="1" encounter_datetime="2005-01-01 00:00:00.0" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="f13d6fae-baa9-4553-955d-920098bec08f"/>
+    <encounter_type encounter_type_id="1" name="Test Enc Type A" description="Some desc" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="2b377dba-62c3-4e53-91ef-b51c68899890"/>
+
+    <!--  The main patients data -->
+
+    <!--  The patient to retire  -->
+    <encounter encounter_id="22" encounter_type="1" patient_id="1" location_id="1" encounter_datetime="2005-01-01 00:00:00.0" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="f13d6fae-baa9-4553-955d-920098bef45a"/>
+    <encounter_type encounter_type_id="1" name="Test Enc Type B" description="Some desc" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="2b377dba-62c3-4e53-91ef-b51c68899890"/>
+
+    <encounter encounter_id="33" encounter_type="1" patient_id="1" location_id="1" encounter_datetime="2005-01-01 00:00:00.0" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="f13d6fae-baa9-4553-955d-920098becs12a"/>
+    <encounter_type encounter_type_id="1" name="Test Enc Type C" description="Some desc" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="2b377dba-62c3-4e53-91ef-b51c68899890"/>
+
+    <concept concept_id="1" retired="false" datatype_id="1" class_id="0" is_set="false" creator="1" date_created="2005-01-01 00:00:00.0" uuid="4a5048b1-cf85-4c64-9339-7cab41e5e364"/>
+    <concept_numeric concept_id="1" hi_absolute="50.0" low_absolute="2.0" precise="false"/>
+    <concept_description concept_description_id="1" concept_id="1" description="this is a description" locale="en" creator="1" date_created="2005-01-01 00:00:00.0" uuid="8b46218d-8dcf-4f45-91b5-837d11486a53"/>
+    <concept_name concept_id="1" name="Some concept name" locale="en" creator="1" date_created="2005-01-01 00:00:00.0" concept_name_id="1" voided="false" uuid="8add472b-156b-468f-ad62-d9333fb86976" />
+    <obs obs_id="132" encounter_id="11" person_id="2" concept_id="1" obs_datetime="2006-02-09 00:00:00.0" location_id="1" value_numeric="1.0" creator="1" date_created="2006-02-10 15:57:35.0" voided="false" uuid="be3a4d7a-f9ab-47bb-aaad-bc0b452fcda4"/>
+    <obs obs_id="133" encounter_id="22" person_id="1" concept_id="1" obs_datetime="2006-02-10 00:00:00.0" location_id="1" value_numeric="2.0" creator="1" date_created="2006-02-11 15:57:35.0" voided="false" uuid="b5499df2-b17c-4b39-88a6-44591c165569"/>
+    <obs obs_id="134" encounter_id="33" person_id="1" concept_id="1" obs_datetime="2006-02-11 00:00:00.0" location_id="1" value_numeric="3.0" creator="1" date_created="2006-02-12 15:57:35.0" voided="false" uuid="efbba621-51ca-428b-8671-4f4eede10b4b"/>
+    <obs obs_id="135" person_id="1" concept_id="1" obs_datetime="2006-02-11 00:00:00.0" location_id="1" value_numeric="3.0" creator="1" date_created="2006-02-12 15:57:35.0" voided="false" uuid="efbba621-51ca-428b-8671-5f4eede10b4b"/>
+
+    <!--  The patient to retire -->
+
+    <!-- Provider information -->
     <users user_id="1" person_id="1" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="6f763a67-2bd1-451c-93b9-95caeb36cc24" />
     <person person_id="1" gender="M" dead="false" birthdate="2005-01-01 00:00:00.0" creator="1" voided="false" date_created="2005-01-01 00:00:00.0" uuid="2e3d45d4-2311-11e0-8dbd-d48564b96044"/>
     <person_name person_id="1" family_name="TestUser" given_name="given_user" person_name_id="1" uuid="2e3d45d4-2311-11e0-8dbd-d48564b96031" preferred="1" middle_name =" " creator = "1" date_created ="2005-01-01 00:00:00.0" voided = "false"/>
     <person_attribute_type person_attribute_type_id="1" name="EPID" description="EPID No." format="java.lang.String" searchable="false" creator="1" date_created="2007-05-03 09:20:37.0" uuid="cdc6a460-2700-102b-80cb-0017a47871b2" retired="false" sort_weight="1"/>
     <person_attribute person_attribute_id="1" person_id="1" value="3525410" person_attribute_type_id="1" creator="1" date_created="2007-05-03 09:20:37.0" voided="false" uuid="ca9a9bac-2700-102b-80cb-0017a47871b2"/>
 
-    <provider provider_id="1" person_id="2" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="c2299800-cca9-11e0-9572-0800200c9a66" />
-    <encounter_provider encounter_provider_id="1" encounter_id="1" encounter_role_id="1" provider_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="c1897cef-05d4-4f71-bc1f-078ddba780ae" />
+    <!--<encounter_provider encounter_provider_id="1" encounter_id="11" encounter_role_id="1" provider_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="c1897cef-05d4-4f71-bc1f-078ddba780ae" />-->
+
 </dataset>
+<!--<dataset>-->
+    <!--<encounter encounter_id="1" encounter_type="1" patient_id="2" location_id="1" encounter_datetime="2005-01-01 00:00:00.0" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="f13d6fae-baa9-4553-955d-920098bec08f"/>-->
+    <!--<encounter_type encounter_type_id="1" name="Test Enc Type B" description="Some desc" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="2b377dba-62c3-4e53-91ef-b51c68899890"/>-->
+    <!--<location location_id="1" name="Test Location" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="3941dd4b-0b6d-4481-b979-ccdd38c76cb4"/>-->
+    <!--<patient patient_id="2" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>-->
+    <!--<patient_identifier patient_identifier_id="1" patient_id="2" identifier="1234" identifier_type="1" preferred="1" location_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="e78bc0fe-6370-4766-b46f-8f4c658fe22b"/>-->
+    <!--<patient_identifier_type patient_identifier_type_id="1" name="Test Identifier Type" description="Test description" check_digit="false" creator="1" date_created="2005-01-01 00:00:00.0" required="false" retired="false" uuid="2238b039-7f77-4384-a912-360dd154f0d1"/>-->
+    <!--<person person_id="2" gender="M" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="b9cb4fb6-6ce3-4475-b08d-6e1a7d4345ce"/>-->
+    <!--<person_name person_name_id="2" preferred="true" person_id="2" given_name="John" middle_name=" " family_name="Doe" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="8e045532-bab6-4ef0-9df2-cb8f94e2eb16"/>-->
+
+    <!--<users user_id="1" person_id="1" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="6f763a67-2bd1-451c-93b9-95caeb36cc24" />-->
+    <!--<person person_id="1" gender="M" dead="false" birthdate="2005-01-01 00:00:00.0" creator="1" voided="false" date_created="2005-01-01 00:00:00.0" uuid="2e3d45d4-2311-11e0-8dbd-d48564b96044"/>-->
+    <!--<person_name person_id="1" family_name="TestUser" given_name="given_user" person_name_id="1" uuid="2e3d45d4-2311-11e0-8dbd-d48564b96031" preferred="1" middle_name =" " creator = "1" date_created ="2005-01-01 00:00:00.0" voided = "false"/>-->
+    <!--<person_attribute_type person_attribute_type_id="1" name="EPID" description="EPID No." format="java.lang.String" searchable="false" creator="1" date_created="2007-05-03 09:20:37.0" uuid="cdc6a460-2700-102b-80cb-0017a47871b2" retired="false" sort_weight="1"/>-->
+    <!--<person_attribute person_attribute_id="1" person_id="1" value="3525410" person_attribute_type_id="1" creator="1" date_created="2007-05-03 09:20:37.0" voided="false" uuid="ca9a9bac-2700-102b-80cb-0017a47871b2"/>-->
+
+    <!--<provider provider_id="1" person_id="2" creator="1" date_created="2005-01-01 00:00:00.0" retired="false" uuid="c2299800-cca9-11e0-9572-0800200c9a66" />-->
+    <!--<encounter_provider encounter_provider_id="1" encounter_id="1" encounter_role_id="1" provider_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="c1897cef-05d4-4f71-bc1f-078ddba780ae" />-->
+<!--</dataset>-->

@@ -40,30 +40,30 @@ public class SharedHealthRecordService {
         boolean isPatientInError = false;
         boolean isPatientInProcessing = false;
 //        try {
-//        for (Patient patientSent : enteredHandler.getPatientInArchiveQueues()) {
-//
-//            if (patientSent.getPatientId().equals(encounter.getPatient().getPatientId())) {
-//                isPatientInCR = true;
-//                break;
-//            }
-//        }
-//
-//        for (Patient patient : enteredHandler.getPatientInProcessingQueues()) {
-//
-//            if (patient.getPatientId().equals(encounter.getPatient().getPatientId())) {
-//                isPatientInProcessing = true;
-//                break;
-//            }
-//        }
-//
-//        for (Patient patient : enteredHandler.getPatientInErrorQueues()) {
-//
-//            if (patient.getPatientId().equals(encounter.getPatient().getPatientId())) {
-//                isPatientInError = true;
-//                break;
-//            }
-//        }
-        //if (isPatientInCR) {
+       for (Patient patientSent : enteredHandler.getPatientInArchiveQueues()) {
+
+           if (patientSent.getPatientId().equals(encounter.getPatient().getPatientId())) {
+               isPatientInCR = true;
+               break;
+           }
+       }
+
+       for (Patient patient : enteredHandler.getPatientInProcessingQueues()) {
+
+           if (patient.getPatientId().equals(encounter.getPatient().getPatientId())) {
+               isPatientInProcessing = true;
+               break;
+           }
+       }
+
+       for (Patient patient : enteredHandler.getPatientInErrorQueues()) {
+
+           if (patient.getPatientId().equals(encounter.getPatient().getPatientId())) {
+               isPatientInError = true;
+               break;
+           }
+       }
+        if (isPatientInCR) {
             MessageTransformer messageTransformer = new HL7MessageTransformer();
             String message = "";
             message = (String) messageTransformer
@@ -82,36 +82,36 @@ public class SharedHealthRecordService {
             thread.start();
 
             return null;
-        //} 
-//        else if (isPatientInError) {
-//            String[] methd = new String[]{"POST", "SavePatientEncounter"};
-//            TreeMap<String, String> parameters = new TreeMap<String, String>();
-//            parameters.put("patientId", clientId);
-//            Thread thread = new Thread(new MessagePostingThread(methd, "Failed due to patient in Errors", parameters, encounter));
-//            thread.setDaemon(true);
-//            thread.start();
-//        } else if (!isPatientInProcessing) {
-//            new ClientRegistryService().registerNewPatient(encounter.getPatient());
-//            MessageTransformer messageTransformer = new HL7MessageTransformer();
-//            String message = "";
-//            message = (String) messageTransformer
-//                    .encodingEncounterToMessage(encounter);
-//            if ("".equals(message) || message.equals(null)) {
-//                return "Register failed due to message creation, Contact Administrator";
-//            }
-//            log.info("Message Sent = " + message);
-//            // TransactionUtil.setCreator(encounter.getCreator());
-//            String[] methd = new String[]{"POST", "SavePatientEncounter"};
-//            TreeMap<String, String> parameters = new TreeMap<String, String>();
-//            parameters.put("patientId", clientId);
-//
-//            Thread thread = new Thread(new MessagePostingThread(methd, message, parameters, encounter));
-//            thread.setDaemon(true);
-//            thread.start();
-//            return null;
-//
-//        }
-//        return null;
+        } 
+       else if (isPatientInError) {
+           String[] methd = new String[]{"POST", "SavePatientEncounter"};
+           TreeMap<String, String> parameters = new TreeMap<String, String>();
+           parameters.put("patientId", clientId);
+           Thread thread = new Thread(new MessagePostingThread(methd, "Failed due to patient in Errors", parameters, encounter));
+           thread.setDaemon(true);
+           thread.start();
+       } else if (!isPatientInProcessing) {
+           new ClientRegistryService().registerNewPatient(encounter.getPatient());
+           MessageTransformer messageTransformer = new HL7MessageTransformer();
+           String message = "";
+           message = (String) messageTransformer
+                   .encodingEncounterToMessage(encounter);
+           if ("".equals(message) || message.equals(null)) {
+               return "Register failed due to message creation, Contact Administrator";
+           }
+           log.info("Message Sent = " + message);
+           // TransactionUtil.setCreator(encounter.getCreator());
+           String[] methd = new String[]{"POST", "SavePatientEncounter"};
+           TreeMap<String, String> parameters = new TreeMap<String, String>();
+           parameters.put("patientId", clientId);
+
+           Thread thread = new Thread(new MessagePostingThread(methd, message, parameters, encounter));
+           thread.setDaemon(true);
+           thread.start();
+           return null;
+
+       }
+       return null;
 
     }
 
