@@ -23,9 +23,6 @@ import org.openmrs.module.rheapocadapter.util.GetPatientUtil;
 public class ObsServiceAdvice implements MethodInterceptor {
 
 	protected static final Log log = LogFactory.getLog(ObsServiceAdvice.class);
-	
-	// List for Hack
-	private static List<PatientServiceAdvice.AOPEvent> processedObsList = new LinkedList<PatientServiceAdvice.AOPEvent>();
 
 	/**
 	 * @see org.springframework.aop.AfterReturningAdvice#afterReturning(Object,
@@ -39,16 +36,6 @@ public class ObsServiceAdvice implements MethodInterceptor {
 		// log.info(invocation.getMethod().getName());
 		GetPatientUtil getPatientUtil = new GetPatientUtil();
 		if (invocation.getMethod().getName().equals("saveObs")) {
-			
-			// HACK: Idempotency check (message uniqueness)
-			Obs returnedObs = (Obs) o;
-			Integer id = returnedObs.getId();
-			synchronized(processedObsList) {
-				if (id != null && PatientServiceAdvice.isEventWithinDiffPeriod(processedObsList, id)) {
-						return o;
-				}
-			}
-			// /HACK
 			
 			// log.info("GetPatientUtil 2");
 			// Setting the parameter from the ObsService.saveObs method

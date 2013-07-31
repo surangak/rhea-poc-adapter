@@ -37,9 +37,6 @@ public class EncounterServiceAdvice implements AfterReturningAdvice {
 
 	protected final Log log = LogFactory.getLog(EncounterServiceAdvice.class);
 	
-	// List for Hack
-	private static List<PatientServiceAdvice.AOPEvent> processedEncounterList = new LinkedList<PatientServiceAdvice.AOPEvent>();
-
 	/**
 	 * @see org.springframework.aop.AfterReturningAdvice#afterReturning(java.lang.Object,
 	 *      java.lang.reflect.Method, java.lang.Object[], java.lang.Object)
@@ -81,16 +78,6 @@ public class EncounterServiceAdvice implements AfterReturningAdvice {
 					// {
 					if ("ANTENATAL CLINIC".equalsIgnoreCase(obsAnswer)) {
 						
-						// HACK: Idempotency check (message uniqueness)
-						Encounter returnedEnc = (Encounter) returnVal;
-						Integer id = returnedEnc.getId();
-						synchronized(processedEncounterList) {
-							if (id != null && PatientServiceAdvice.isEventWithinDiffPeriod(processedEncounterList, id)) {
-								return;
-							}
-						}
-						// /HACK
-						
 						// Querry SHR for patient encounters
 						Patient patient = Context.getPatientService()
 								.getPatient(
@@ -121,18 +108,6 @@ public class EncounterServiceAdvice implements AfterReturningAdvice {
 				}
 			}
 			if (correctEncounter) {
-				
-				// HACK: Idempotency check (message uniqueness)
-				synchronized(this) {
-					Encounter returnedEnc = (Encounter) returnVal;
-					Integer id = returnedEnc.getId();
-					synchronized(processedEncounterList) {
-						if (id != null && PatientServiceAdvice.isEventWithinDiffPeriod(processedEncounterList, id)) {
-							return;
-						}
-					}
-				}
-				// /HACK
 
 				SharedHealthRecordService sharedHealthRecordService = new SharedHealthRecordService();
 				// Set<PatientIdentifier>
