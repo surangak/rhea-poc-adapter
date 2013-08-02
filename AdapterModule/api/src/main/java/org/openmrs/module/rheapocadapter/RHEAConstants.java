@@ -46,6 +46,8 @@ public class RHEAConstants {
 	public static final String ENCOUNTER_TYPE = MODULE_ID + ".encounterType";
 	
 	public static final String PATIENT_ID_TYPE = MODULE_ID + ".patientIdType";
+	
+	public static final String PRIMARY_CARE_PATIENT_ID_TYPE = MODULE_ID + ".primaryCarePatientIdType";
 
 	public static final String CONNECTION_TIME_OUT = MODULE_ID
 			+ ".connection_Time_out";

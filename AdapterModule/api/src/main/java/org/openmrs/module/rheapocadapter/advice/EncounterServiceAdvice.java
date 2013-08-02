@@ -138,41 +138,40 @@ public class EncounterServiceAdvice implements AfterReturningAdvice {
 				// Set<PatientIdentifier>
 				Patient patient = encounter.getPatient();
 				String clientId = "";
-				PatientIdentifierType nid = Context.getPatientService()
-						.getPatientIdentifierTypeByName("NID");
-				PatientIdentifierType mutuelle = Context.getPatientService()
-						.getPatientIdentifierTypeByName("Mutuelle");
-				PatientIdentifierType rama = Context.getPatientService()
-						.getPatientIdentifierTypeByName("RAMA");
-				PatientIdentifierType primaryCare = Context.getPatientService()
-						.getPatientIdentifierTypeByName("Primary Care ID Type");
 
-				if (getPatientIdentifierByIdentifierType(patient, nid) != null) {
-					clientId = nid
-							+ "-"
-							+ getPatientIdentifierByIdentifierType(patient, nid);
-				} else if (getPatientIdentifierByIdentifierType(patient, rama) != null) {
-					clientId = rama
-							+ "-"
-							+ getPatientIdentifierByIdentifierType(patient,
-									rama);
-				} else if (getPatientIdentifierByIdentifierType(patient,
-						mutuelle) != null) {
-					clientId = mutuelle
-							+ "-"
-							+ getPatientIdentifierByIdentifierType(patient,
-									mutuelle);
-				} else if (getPatientIdentifierByIdentifierType(patient,
-						primaryCare) != null) {
-					implementationId = implementationId.toLowerCase();
-					String fosaid = implementationId.substring(implementationId
-							.indexOf("rwanda") + 6);
-					clientId = "OMRS"
-							+ fosaid
-							+ "-"
-							+ getPatientIdentifierByIdentifierType(patient,
-									primaryCare);
+				// ArrayList from global property that contains patient ID Types
+				String[] patientIdentifierTypes = Context.getAdministrationService()
+						.getGlobalProperty(RHEAConstants.PATIENT_ID_TYPE).split(",");
+
+				PatientIdentifierType pidType; 
+				
+				// for each patient ID type, check if patient has an identifier of that type
+				for (String pidStr : patientIdentifierTypes){
+					pidType = Context.getPatientService()
+							.getPatientIdentifierTypeByName(pidStr);
+					if (getPatientIdentifierByIdentifierType(patient, pidType) != null){
+						// if ID is of Primary Care type, set custom OMRS clientId
+						// else if of other type, set custom clientId
+						if(pidStr.equalsIgnoreCase(Context.getAdministrationService()
+						.getGlobalProperty(RHEAConstants.PRIMARY_CARE_PATIENT_ID_TYPE))){
+							implementationId = implementationId.toLowerCase();
+							String fosaid = implementationId.substring(implementationId
+									.indexOf("rwanda") + 6);
+							clientId = "OMRS"
+									+ fosaid
+									+ "-"
+									+ getPatientIdentifierByIdentifierType(patient,pidType);
+							break;
+						}
+						else{
+							clientId = pidType
+									+ "-"
+									+ getPatientIdentifierByIdentifierType(patient,pidType);
+						}
+					}
+					
 				}
+				
 				if (clientId == "") {
 
 					clientId = patient.getPatientIdentifier()

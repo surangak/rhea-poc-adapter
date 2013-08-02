@@ -64,6 +64,13 @@
 		</description>
 	</globalProperty>
 	<globalProperty>
+		<property>@MODULE_ID@.primaryCarePatientIdType</property>
+		<defaultValue>Primary Care ID Type</defaultValue>
+		<description>
+			Primary Care Patient ID Type String
+		</description>
+	</globalProperty>
+	<globalProperty>
 		<property>@MODULE_ID@.hostname</property>
 		<defaultValue>https://hie.jembi.org:5000</defaultValue>
 		<description>
