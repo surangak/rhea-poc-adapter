@@ -34,9 +34,6 @@ public class PatientServiceAdvice implements MethodInterceptor {
 
 	protected final Log log = LogFactory.getLog(PatientServiceAdvice.class);
 
-	// List for Hack
-	private static List<AOPEvent> processedPatList = new LinkedList<AOPEvent>();
-
 	public Object invoke(MethodInvocation invocation) throws Throwable {
 		ClientRegistryService clientService = new ClientRegistryService();
 		boolean update = false;
@@ -54,18 +51,6 @@ public class PatientServiceAdvice implements MethodInterceptor {
 
 		if (invocation.getMethod().getName().equals("savePatient")) {
 
-			// HACK: Idempotency check (message uniqueness)
-			Patient returnedPatient = (Patient) o;
-			Integer id = returnedPatient.getId();
-
-			synchronized (processedPatList) {
-				if (!update && id != null
-						&& isEventWithinDiffPeriod(processedPatList, id)) {
-					return o;
-				}
-			}
-			// /HACK
-
 			if (!update) {
 				log.info("Save Patient to Client Registry");
 				clientService.registerNewPatient(patient);
@@ -79,44 +64,4 @@ public class PatientServiceAdvice implements MethodInterceptor {
 		return o;
 	}
 
-	// HACK-HACK: check that an AOP event happens within a certain amount of
-	// time
-	public static class AOPEvent {
-		Integer eventId;
-		long timestamp = System.currentTimeMillis();
-
-		public boolean withinEventDiff(AOPEvent ev) {
-			long diff = (Long.parseLong(Context.getAdministrationService()
-					.getGlobalProperty("rheapocadapter.connection_Time_out")
-					.trim()) * 2L + 20L) * 1000L;
-			return Math.abs(ev.timestamp - timestamp) < diff;
-		}
-	}
-
-	public static boolean isEventWithinDiffPeriod(List<AOPEvent> lst,
-			Integer eventId) {
-		boolean found = false;
-		Iterator<AOPEvent> iter = lst.iterator();
-		AOPEvent ev = new AOPEvent();
-		ev.eventId = eventId;
-
-		while (iter.hasNext()) {
-			AOPEvent lev = iter.next();
-			if (!lev.withinEventDiff(ev)) {
-				iter.remove();
-				continue;
-			}
-
-			if (lev.eventId.equals(ev.eventId)) {
-				lev.timestamp = ev.timestamp;
-				found = true;
-			}
-		}
-
-		if (!found)
-			lst.add(ev);
-
-		return found;
-	}
-	// /HACK-HACK
 }
