@@ -1,8 +1,6 @@
 package org.openmrs.module.rheapocadapter.advice;
 
 import java.lang.reflect.Method;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -33,11 +31,11 @@ public class ObsServiceAdvice implements MethodInterceptor {
 		
 		Object o = invocation.proceed();
 		
-		// log.info(invocation.getMethod().getName());
+
 		GetPatientUtil getPatientUtil = new GetPatientUtil();
 		if (invocation.getMethod().getName().equals("saveObs")) {
 			
-			// log.info("GetPatientUtil 2");
+
 			// Setting the parameter from the ObsService.saveObs method
 			Obs obs = (Obs) invocation.getArguments()[0];
 

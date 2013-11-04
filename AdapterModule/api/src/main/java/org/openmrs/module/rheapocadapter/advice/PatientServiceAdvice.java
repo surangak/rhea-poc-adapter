@@ -13,9 +13,6 @@
  */
 package org.openmrs.module.rheapocadapter.advice;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -38,10 +35,10 @@ public class PatientServiceAdvice implements MethodInterceptor {
 		ClientRegistryService clientService = new ClientRegistryService();
 		boolean update = false;
 		Patient patient = null;
-		PatientService ps = Context.getPatientService();
+
 		if (invocation.getMethod().getName().equals("savePatient")) {
 			patient = (Patient) invocation.getArguments()[0];
-			ps = Context.getPatientService();
+            PatientService ps = Context.getPatientService();
 			if (ps.getPatientByExample(patient) != null) {
 				update = true;
 

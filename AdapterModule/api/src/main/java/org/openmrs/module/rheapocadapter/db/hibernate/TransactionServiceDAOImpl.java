@@ -121,10 +121,6 @@ public class TransactionServiceDAOImpl implements TransactionServiceDAO {
 
 		if (pat == null) {
 			return null;
-			// pat = new PersonAttributeType();
-			// pat.setName("NID");
-			// pat.setDescription("National ID");
-			// Context.getPersonService().savePersonAttributeType(pat);
 		}
 
 		Query query = sessionFactory

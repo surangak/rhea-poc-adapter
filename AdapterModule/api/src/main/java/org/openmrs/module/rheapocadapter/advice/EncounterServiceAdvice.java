@@ -44,7 +44,7 @@ public class EncounterServiceAdvice implements AfterReturningAdvice {
 	@Override
 	public void afterReturning(Object returnVal, Method method, Object[] args,
 			Object target) throws Throwable {
-		// try {
+
 		GetPatientUtil getPatientUtil = new GetPatientUtil();
 		String implementationId = "";
 		try {
@@ -90,7 +90,6 @@ public class EncounterServiceAdvice implements AfterReturningAdvice {
 						// }
 					}
 					}
-					// log.info(obsAnswer);
 				}
 
 			}
@@ -163,11 +162,6 @@ public class EncounterServiceAdvice implements AfterReturningAdvice {
 			} else
 				log.info("correctEncounter " + correctEncounter);
 		}
-		// } catch (Exception e) {
-		// log.info(e.getMessage());
-		// e.printStackTrace();
-		//
-		// }
 	}
 
 	private PatientIdentifier getPatientIdentifierByIdentifierType(

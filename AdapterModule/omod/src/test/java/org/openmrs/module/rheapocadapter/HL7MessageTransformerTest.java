@@ -34,6 +34,7 @@ public class HL7MessageTransformerTest extends BaseModuleContextSensitiveTest {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "");
         HttpServletResponse response = new MockHttpServletResponse();
         Encounter encounter= Context.getEncounterService().getEncounter(1);
+        //Need to fix null encounter provider for this test
 //        assertNotNull(encounter.getProvider());
         String message = (String) messageTransformer
                 .encodingEncounterToMessage(encounter);

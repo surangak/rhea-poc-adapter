@@ -197,7 +197,6 @@ public class ADTMessageHandler {
 			return adt;
 		} catch (HL7Exception e) {
 			log.error("Error while processing ADT_A28 message" + e.getMessage());
-			// e.printStackTrace();
 
 			return null;
 		}
@@ -207,16 +206,7 @@ public class ADTMessageHandler {
 	private Integer findPatientId(PID pid) throws HL7Exception {
 
 		return resolvePatientIds(pid);
-		// if (patientId == null) {
-		// PatientService ps = Context.getPatientService();
-		// for (Patient p : ps.getAllPatients()) {
-		// List<PatientIdentifier> patientIds = p.getActiveIdentifiers();
-		// if (patientIds.contains(patientId)) {
-		// return patientId;
-		// }
-		// }
-		// }
-		// return null;
+
 	}
 
 	// Create a new patient when this patient doesn't exist in the database
