@@ -886,6 +886,7 @@ public class HL7MessageTransformer implements MessageTransformer, Application {
 				dodStr = df.format(dod);
 
 			// Address
+			if(patient.getPersonAddress() != null) {
 			XAD add = pid.getPatientAddress(0);
 			add.getCountry().setValue(patient.getPersonAddress().getCountry());
 			add.getStateOrProvince().setValue(
@@ -898,6 +899,7 @@ public class HL7MessageTransformer implements MessageTransformer, Application {
 					patient.getPersonAddress().getCityVillage());
 			add.getOtherGeographicDesignation().setValue(
 					patient.getPersonAddress().getNeighborhoodCell());
+			}
 
 			// gender
 			pid.getAdministrativeSex().setValue(patient.getGender());
